@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34622.214
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assignment1", "Assignment1\Assignment1.csproj", "{EBC3CFBC-3FDE-48EE-80DA-A52F4D1BEAB8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PRN231_Group11_Assignment1_API", "PRN231_Group11_Assignment1_API\PRN231_Group11_Assignment1_API.csproj", "{EBC3CFBC-3FDE-48EE-80DA-A52F4D1BEAB8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PRN231_Group11_Assignment1_Repo", "PRN231_Group11_Assignment1_Repo\PRN231_Group11_Assignment1_Repo.csproj", "{F4789D2D-EA20-430E-9F3A-BFD9A49D8D96}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{EBC3CFBC-3FDE-48EE-80DA-A52F4D1BEAB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EBC3CFBC-3FDE-48EE-80DA-A52F4D1BEAB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EBC3CFBC-3FDE-48EE-80DA-A52F4D1BEAB8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4789D2D-EA20-430E-9F3A-BFD9A49D8D96}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4789D2D-EA20-430E-9F3A-BFD9A49D8D96}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4789D2D-EA20-430E-9F3A-BFD9A49D8D96}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4789D2D-EA20-430E-9F3A-BFD9A49D8D96}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
