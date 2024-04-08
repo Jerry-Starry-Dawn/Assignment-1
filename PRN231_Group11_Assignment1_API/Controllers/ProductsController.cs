@@ -25,7 +25,14 @@ public class ProductsController :  ControllerBase
         try
         {
             var products = _unitOfWork.GetRepository<Product>().Get(1,10,x => x.Category!).ToList();
-            return Ok(products);
+            var productDtos = products.Select(x => new ProductDto()
+            {
+                ProductName = x.ProductName,
+                UnitPrice = x.UnitPrice,
+                UnitsInStock = x.UnitsInStock,
+                Weight = x.Weight
+            }).ToList();
+            return Ok(productDtos);
         }
         catch (Exception ex)
         {
@@ -62,6 +69,52 @@ public class ProductsController :  ControllerBase
         }
     }
     
+    [HttpGet("search", Name = "SearchProducts")]
+    public IActionResult SearchProducts([FromQuery] string keyword, [FromQuery] decimal minPrice, [FromQuery] decimal maxPrice, [FromQuery] int pageNumber, [FromQuery] int pageSize)
+    {
+        try
+        {
+            var products = new List<Product>();
+            if(minPrice != 0 || maxPrice != 0 || !string.IsNullOrEmpty(keyword))
+            {
+                if (minPrice != 0 && maxPrice != 0 && minPrice < maxPrice 
+                    && !string.IsNullOrEmpty(keyword))
+                {
+                    products = _unitOfWork.GetRepository<Product>()
+                        .FindByCondition(product => product.UnitPrice >= minPrice 
+                                                    && product.UnitPrice <= maxPrice,
+                            pageNumber, pageSize).ToList();
+                }
+                else if (minPrice == 0 && maxPrice == 0)
+                {
+                    products = _unitOfWork.GetRepository<Product>()
+                        .FindByCondition(product => product.ProductName.Contains(keyword),
+                            pageNumber, pageSize).ToList();
+                }
+                else
+                {
+                    return BadRequest("Invalid price range or keyword.");
+                }
+            }
+            
+            var productDtos = products.Select(product => new ProductDto
+            {
+                Id = product.Id,
+                ProductName = product.ProductName,
+                Weight = product.Weight,
+                UnitPrice = product.UnitPrice,
+                UnitsInStock = product.UnitsInStock,
+            }).ToList();
+        
+            return Ok(productDtos);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error occurred while fetching products by price range and keyword.");
+            return StatusCode(500, "Internal server error");
+        }
+    }
+    
     [HttpPost(Name = "CreateProduct")]
     public IActionResult CreateProduct([FromBody] CreateProductRequest request)
     {
@@ -72,6 +125,10 @@ public class ProductsController :  ControllerBase
             {
                 return NotFound("Category does not exist.");
             }
+            
+            if(request.UnitPrice <= 0 || request.UnitsInStock <= 0)
+                return BadRequest("Unit price and units in stock must be greater than 0.");
+            
             var product = new Product
             {
                 ProductName = request.ProductName,
@@ -126,6 +183,9 @@ public class ProductsController :  ControllerBase
                 return NotFound("Product does not exist.");
             }
 
+            if(request.UnitPrice <= 0 || request.UnitsInStock <= 0)
+                return BadRequest("Unit price and units in stock must be greater than 0.");
+            
             var category = _unitOfWork.GetRepository<Category>().GetById(request.CategoryId);
             if (category is null)
             {
