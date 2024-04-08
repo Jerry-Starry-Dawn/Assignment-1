@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using PRN231_Group11_Assignment1_Repo;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,10 +7,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDatabase();
 builder.Services.AddUnitOfWork();
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler=ReferenceHandler.IgnoreCycles);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
 
 var app = builder.Build();
 

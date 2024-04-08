@@ -68,7 +68,18 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
             return query;
         }
 
-        public TEntity? GetById(object? id) => _context.Set<TEntity>().Find(id);
+        public TEntity? GetById(object? id, params Expression<Func<TEntity, object>>[] includeProperties)
+        {
+            IQueryable<TEntity> query = _context.Set<TEntity>();
+            query = query.Where(entity => EF.Property<object>(entity, "Id") == id);
+
+            foreach (var includeProperty in includeProperties)
+            {
+                query = query.Include(includeProperty);
+            }
+
+            return query.FirstOrDefault();
+        }
 
         public void Insert(TEntity entity)
         {
